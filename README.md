@@ -25,7 +25,7 @@ The joke **stays until clicked, then disappears**, resetting the **Pomodoro time
 
 ## 🎮 Features  
 ✅ **Idle & Dancing Animations** - Cappy **wiggles its ears** when idle and **dances** occasionally 🎶  
-✅ **Dog-Themed Dad Jokes** - Over **500+ random dog jokes** that make your work fun 🐶  
+✅ **Dog-Themed Dad Jokes** - Over **80+ random dog jokes** that make your work fun 🐶  
 ✅ **Auto-Timer Reset** - Joke disappears after **10 seconds** (or until clicked), restarting the **Pomodoro timer** ⏳  
 ✅ **Always-On-Top Companion** - Stays **in the bottom-right corner of your screen**, so it never interrupts your work 📌  
 
