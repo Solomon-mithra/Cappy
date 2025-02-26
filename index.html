@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cappy - Your Pomodoro Dog Companion</title>
+    <style>
+        /* General Page Styles */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            color: #333;
+        }
+
+        /* Limit max width for better readability */
+        .content {
+            max-width: 500px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .explanation {
+            font-size: 14px;
+            /* Smaller font size */
+            color: #666;
+            /* Greyish text */
+            line-height: 1.5;
+            /* Slightly reduced line height */
+            max-width: 450px;
+            /* Limits width for better readability */
+            margin: 15px auto;
+            /* Center align with spacing */
+            text-align: center;
+            opacity: 0.9;
+            /* Slightly transparent to keep it subtle */
+        }
+
+
+        /* Dog Container */
+        #dogContainer {
+            width: 300px;
+            height: 200px;
+            margin: 20px auto;
+            position: relative;
+            margin-top: 60px;
+        }
+
+        /* Joke Box Positioned Above Dog (Top-Left) */
+        #jokeBox {
+            position: absolute;
+            top: -50px;
+            left: -10px;
+            width: 200px;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+            font-size: 12px;
+            color: #444;
+            text-align: center;
+            display: none;
+            cursor: pointer;
+            font-style: italic;
+        }
+
+        /* Title & Subtitle */
+        h1 {
+            font-size: 38px;
+            margin: 10px 0;
+            color: #ff6600;
+            font-weight: bold;
+        }
+
+        h2 {
+            font-size: 18px;
+            font-weight: normal;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        /* Modern Download Button */
+        .download-btn {
+            display: inline-block;
+            padding: 14px 22px;
+            background: linear-gradient(135deg, #ff6600, #ff4400);
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-weight: bold;
+            transition: 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border: none;
+        }
+
+        .download-btn:hover {
+            background: linear-gradient(135deg, #ff4400, #ff2200);
+            transform: scale(1.05);
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 40px;
+            font-size: 14px;
+            color: #888;
+        }
+
+        .footer a {
+            text-decoration: none;
+            color: #ff6600;
+            font-weight: bold;
+        }
+
+        /* Animations */
+        .idle #leftEar,
+        .idle #rightEar {
+            animation: earWiggle 1s infinite;
+        }
+
+        @keyframes earWiggle {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            25% {
+                transform: rotate(-1deg);
+            }
+
+            50% {
+                transform: rotate(1deg);
+            }
+
+            75% {
+                transform: rotate(-1deg);
+            }
+
+            100% {
+                transform: rotate(0deg);
+            }
+        }
+
+        .dancing {
+            animation: dance 1s infinite;
+        }
+
+        @keyframes dance {
+            0% {
+                transform: translateY(0px) rotate(0deg);
+            }
+
+            25% {
+                transform: translateY(0px) rotate(-5deg);
+            }
+
+            50% {
+                transform: translateY(0px) rotate(5deg);
+            }
+
+            75% {
+                transform: translateY(0px) rotate(-5deg);
+            }
+
+            100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="content">
+        <h1>Cappy</h1>
+        <h2>Your Fun Pomodoro Dog Companion</h2>
+
+        <div id="dogContainer">
+            <div id="jokeBox"></div> <!-- Joke Box Positioned Above Dog (Top-Left) -->
+
+            <!-- Full Dog SVG with All Details -->
+            <svg id="dogSvg" width="200px" height="200px" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                <g id="dog">
+                    <!-- LEFT EAR -->
+                    <path id="leftEar" class="cls-1" fill="#965500"
+                        d="M25,13v4A12,12,0,0,1,13,29a6,6,0,0,1-6-6V19A12,12,0,0,1,19,7a6,6,0,0,1,5.94,5.21A5.16,5.16,0,0,1,25,13Z" />
+
+                    <!-- RIGHT EAR -->
+                    <path id="rightEar" class="cls-1" fill="#965500"
+                        d="M57,19v4a6,6,0,0,1-6,6A12,12,0,0,1,39,17V13a5.16,5.16,0,0,1,.06-.79A6,6,0,0,1,45,7,12,12,0,0,1,57,19Z" />
+
+                    <!-- Head and body -->
+                    <path class="cls-2" fill="#efc589"
+                        d="M53,32V49a8,8,0,0,1-8,8H19a8,8,0,0,1-8-8V32a21.84,21.84,0,0,1,.25-3.26A6,6,0,0,0,13,29,12,12,0,0,0,25,17V13a5.16,5.16,0,0,0-.06-.79,21.2,21.2,0,0,1,14.12,0A5.16,5.16,0,0,0,39,13v4A12,12,0,0,0,51,29a6,6,0,0,0,1.75-.26A21.84,21.84,0,0,1,53,32Z" />
+
+                    <!-- Eyes -->
+                    <circle class="cls-4" fill="#2d2d2d" cx="23.5" cy="29.5" r="1.5" />
+                    <circle class="cls-4" fill="#2d2d2d" cx="40.5" cy="29.5" r="1.5" />
+
+                    <!-- Nose -->
+                    <path class="cls-5" fill="#3e2c27" d="M32,52a1,1,0,0,1-1-1V39a1,1,0,0,1,2,0V51A1,1,0,0,1,32,52Z" />
+
+                    <!-- Mouth -->
+                    <path class="cls-5" fill="#3e2c27"
+                        d="M35,37.48a1.49,1.49,0,0,1-.77,1.33L32,40l-2.23-1.19A1.49,1.49,0,0,1,29,37.48a.13.13,0,0,1,0-.06A1.42,1.42,0,0,1,30.39,36h3.22A1.42,1.42,0,0,1,35,37.42.13.13,0,0,1,35,37.48Z" />
+                </g>
+            </svg>
+        </div>
+
+        <p class="explanation">
+            Meet <strong>Cappy</strong>, your friendly Pomodoro companion! 🐶 </br> </br> Every <strong>20
+                minutes</strong>, Cappy pops up with a funny dog joke.
+            The joke stays for <strong> until clicked </strong>, then disappears.
+            This resets the timer, helping you stay focused with some pawsome fun! 🐾
+        </p>
+
+        <a href="https://github.com/yourrepo/cappy" class="download-btn">Download Cappy</a>
+
+        <div class="footer">
+            Built with ❤️ by <a href="https://www.linkedin.com/in/solomonmithra" target="_blank">Solomon Mithra</a>
+        </div>
+    </div>
+
+    <script>
+        const actions = ['idle', 'dancing'];
+        const dogSvg = document.getElementById('dog');
+        const jokeBox = document.getElementById('jokeBox');
+
+        function performRandomAction() {
+            dogSvg.classList.remove(...actions);
+            const randomAction = actions[Math.floor(Math.random() * actions.length)];
+            dogSvg.classList.add(randomAction);
+        }
+        setInterval(performRandomAction, 5000);
+
+        function showRandomJoke() {
+            jokeBox.innerText = "🐶 Why did the dog sit in the shade? Because he didn't want to be a hot dog!";
+            jokeBox.style.display = "block";
+
+            setTimeout(() => {
+                jokeBox.style.display = "none";
+            }, 10000);
+            jokeBox.onclick = () => {
+                jokeBox.style.display = "none";
+            };
+            setTimeout(showRandomJoke, 20 * 60 * 1000);
+        }
+        showRandomJoke();
+    </script>
+</body>
+
+</html>

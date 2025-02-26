@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Dog Companion</title>
+    <style>
+      /* Make the background transparent and remove scrollbars */
+      body {
+        margin: 0;
+        background: transparent;
+        overflow: hidden;
+      }
+
+      /* Position the dog in the bottom-right corner */
+      #dogContainer {
+        position: fixed;
+        bottom: 10px;
+        right: 10px;
+        width: 100px;
+        height: 100px;
+      }
+
+      /* Scale the SVG */
+      #dogSvg {
+        width: 100%;
+        height: 100%;
+      }
+
+      /* Crisp edges for pixel art (optional) */
+      svg {
+        image-rendering: pixelated;
+      }
+
+      /*******************************************************
+       *  ANIMATION CLASSES: idle (wiggle ears), dancing
+       *******************************************************/
+
+      /* Idle: Wiggle ears gently */
+      .idle #leftEar,
+      .idle #rightEar {
+        animation: earWiggle 1s infinite;
+      }
+      @keyframes earWiggle {
+        0%   { transform: rotate(0deg); }
+        25%  { transform: rotate(-9deg); }
+        50%  { transform: rotate(5deg); }
+        75%  { transform: rotate(-9deg); }
+        100% { transform: rotate(0deg); }
+      }
+
+      /* Adjust pivot point for ear wiggling */
+      #leftEar {
+        transform-origin: 25px 13px;
+      }
+      #rightEar {
+        transform-origin: 57px 19px;
+      }
+
+      /* Dancing */
+      .dancing {
+        animation: dance 1s infinite;
+      }
+      @keyframes dance {
+        0%   { transform: translateY(0px) rotate(0deg); }
+        25%  { transform: translateY(0px) rotate(-5deg); }
+        50%  { transform: translateY(0px) rotate(5deg); }
+        75%  { transform: translateY(0px) rotate(-5deg); }
+        100% { transform: translateY(0px) rotate(0deg); }
+      }
+
+      /*******************************************************
+       *  DAD JOKE DIALOGUE BOX
+       *******************************************************/
+      #jokeBox {
+        position: fixed;
+        bottom: 120px;
+        right: 20px;
+        width: 200px;
+        padding: 10px;
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 10px;
+        box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+        font-size: 14px;
+        color: #333;
+        text-align: center;
+        display: none; /* Hidden until joke appears */
+        cursor: pointer;
+      }
+
+      /*******************************************************
+       *  SVG COLOR FIX
+       *******************************************************/
+      .cls-1 { fill: #965500; } /* Ears */
+      .cls-2 { fill: #efc589; } /* Face */
+      .cls-3 { fill: #b19267; } /* Body */
+      .cls-4 { fill: #2d2d2d; } /* Eyes */
+      .cls-5 { fill: #3e2c27; } /* Nose & Mouth */
+    </style>
+  </head>
+  <body>
+    <div id="dogContainer">
+      <!-- Your dog SVG with eyes, nose, and full details restored -->
+      <svg id="dogSvg" width="800px" height="800px" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+        <g id="dog">
+          <!-- LEFT EAR -->
+          <path id="leftEar" class="cls-1" d="M25,13v4A12,12,0,0,1,13,29a6,6,0,0,1-6-6V19A12,12,0,0,1,19,7a6,6,0,0,1,5.94,5.21A5.16,5.16,0,0,1,25,13Z"/>
+
+          <!-- RIGHT EAR -->
+          <path id="rightEar" class="cls-1" d="M57,19v4a6,6,0,0,1-6,6A12,12,0,0,1,39,17V13a5.16,5.16,0,0,1,.06-.79A6,6,0,0,1,45,7,12,12,0,0,1,57,19Z"/>
+
+          <!-- Head and body -->
+          <path class="cls-2" d="M53,32V49a8,8,0,0,1-8,8H19a8,8,0,0,1-8-8V32a21.84,21.84,0,0,1,.25-3.26A6,6,0,0,0,13,29,12,12,0,0,0,25,17V13a5.16,5.16,0,0,0-.06-.79,21.2,21.2,0,0,1,14.12,0A5.16,5.16,0,0,0,39,13v4A12,12,0,0,0,51,29a6,6,0,0,0,1.75-.26A21.84,21.84,0,0,1,53,32Z"/>
+
+          <!-- Eyes -->
+          <circle class="cls-4" cx="23.5" cy="29.5" r="1.5"/>
+          <circle class="cls-4" cx="40.5" cy="29.5" r="1.5"/>
+
+          <!-- Nose -->
+          <path class="cls-5" d="M32,52a1,1,0,0,1-1-1V39a1,1,0,0,1,2,0V51A1,1,0,0,1,32,52Z"/>
+
+          <!-- Mouth -->
+          <path class="cls-5" d="M35,37.48a1.49,1.49,0,0,1-.77,1.33L32,40l-2.23-1.19A1.49,1.49,0,0,1,29,37.48a.13.13,0,0,1,0-.06A1.42,1.42,0,0,1,30.39,36h3.22A1.42,1.42,0,0,1,35,37.42.13.13,0,0,1,35,37.48Z"/>
+        </g>
+      </svg>
+    </div>
+
+    <!-- Joke Box -->
+    <div id="jokeBox"></div>
+
+    <script>
+      const actions = ['idle', 'dancing'];
+      const dogSvg = document.getElementById('dog');
+      const jokeBox = document.getElementById('jokeBox');
+      let jokes = [];
+
+      // Load jokes from a local file
+      fetch('jokes.txt')
+        .then(response => response.text())
+        .then(text => {
+          jokes = text.split("\n").filter(joke => joke.trim() !== "");
+          showRandomJoke();
+        });
+
+      // Function to change dog animation
+      function performRandomAction() {
+        dogSvg.classList.remove(...actions);
+        const randomAction = actions[Math.floor(Math.random() * actions.length)];
+        dogSvg.classList.add(randomAction);
+      }
+      setInterval(performRandomAction, 5000);
+
+      // Function to show a new joke every 20 minutes
+      function showRandomJoke() {
+        if (jokes.length === 0) return;
+
+        const randomJoke = jokes[Math.floor(Math.random() * jokes.length)];
+        jokeBox.innerText = randomJoke;
+        jokeBox.style.display = "block";
+
+        jokeBox.onclick = () => {
+          jokeBox.style.display = "none";
+          setTimeout(showRandomJoke, 20 * 60 * 1000);
+        };
+      }
+    </script>
+  </body>
+</html>
